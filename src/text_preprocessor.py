@@ -41,7 +41,7 @@ class TextPreprocessor:
         lines = self.text.split('\n')
         self.text = '\n'.join(
             line for line in lines
-            if not line.isupper() or any(c.isalpha() for c in line)
+            if not line.isupper() and any(c.isalpha() for c in line)
         )
 
     def lowercase_and_tokenize(self):
@@ -56,7 +56,21 @@ class TextPreprocessor:
         """
         punctuation_marks = ['.', '!', '?']
         for mark in punctuation_marks:
-            self.text = self.text.replace(mark, mark + '\n')
+            self.text = self.text.replace(' ' + mark, mark + '\n')
+        
+    def capitalize_first_character(self):
+        """
+        Capitalize the first character of each line in the given text.
+
+        Args:
+            text (str): The input text.
+
+        Returns:
+            str: Text with the first character of each line capitalized.
+        """
+        lines = self.text.split('\n')
+        capitalized_lines = [line.capitalize() for line in lines]
+        self.text = '\n'.join(capitalized_lines)
 
     def preprocess(self):
         """
@@ -67,6 +81,7 @@ class TextPreprocessor:
         self.remove_captions()
         self.lowercase_and_tokenize()
         self.add_new_line_after_punctuation()
+        self.capitalize_first_character()
 
     def get_processed_text(self):
         """
